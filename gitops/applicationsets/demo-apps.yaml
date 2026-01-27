@@ -13,6 +13,12 @@ spec:
         namespace: prod
         valuesFile: gitops/environments/values/backend-prod.yaml
         autoSync: "true"
+      - app: traffic-generator
+        path: traffic-gen-app/chart
+        env: prod
+        namespace: prod
+        valuesFile: gitops/environments/values/traffic-generator-prod.yaml
+        autoSync: "true"
   template:
     metadata:
       name: '{{app}}-{{env}}'
