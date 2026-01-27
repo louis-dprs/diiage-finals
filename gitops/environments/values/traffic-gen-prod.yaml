@@ -6,7 +6,7 @@ image:
   pullPolicy: IfNotPresent
 
 env:
-  BACKEND_URL: "http://backend-prod:80"
+  BACKEND_URL: "http://backend-prod-diiage-finals-app-backend:80"
   INTERVAL: "5s"
 
 resources:
