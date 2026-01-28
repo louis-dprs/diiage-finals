@@ -3,13 +3,15 @@ kind: ServiceMonitor
 metadata:
   name: backend-monitor
   labels:
-    # Ce label est indispensable : il doit matcher ce que Prometheus cherche
-    release: monitoring
+    # Ce label est OBLIGATOIRE pour que ton Prometheus 
+    # (qui a le label instance=monitoring) accepte de lire ce moniteur.
+    release: monitoring 
 spec:
   selector:
     matchLabels:
-      # Doit être IDENTIQUE aux labels de ton Service dans app/chart/templates/service.yaml
-      app.kubernetes.io/name: shop-backend
+      # On utilise les labels EXACTS que tu as vus dans ton "kubectl get svc"
+      app.kubernetes.io/name: diiage-finals-app
+      app.kubernetes.io/instance: backend-app
   endpoints:
   - port: http
     path: /metrics
