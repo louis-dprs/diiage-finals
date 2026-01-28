@@ -1,0 +1,11 @@
+{{- if .Values.backend.config.createConfigMap }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Values.backend.config.configmapName | default "app-config" }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "diiage-finals-app.labels" . | nindent 4 }}
+data:
+  {{- toYaml .Values.backend.config.configmapData | nindent 2 }}
+{{- end }}

@@ -19,3 +19,13 @@ backend:
   config:
     appName: "shop-backend"
     logLevel: "info"
+    # Name of the ConfigMap to fetch in the /config endpoint
+    configmapName: "app-config"
+    # Create a ConfigMap in the chart for the app to read via /config
+    createConfigMap: true
+    configmapData:
+      feature_x: "enabled"
+      feature_y: "disabled"
+      debug_mode: "false"
+      api_timeout_seconds: "30"
+      cache_ttl: "3600"

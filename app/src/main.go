@@ -70,13 +70,19 @@ func main() {
 		slog.Debug("Request completed", "path", r.URL.Path, "status", 200)
 	})
 
+	configmapName := os.Getenv("CONFIGMAP_NAME")
+	if configmapName == "" {
+		configmapName = "app-config"
+		slog.Warn("CONFIGMAP_NAME not set, using default", "configmap", configmapName)
+	}
+
 	http.HandleFunc("/config", func(w http.ResponseWriter, r *http.Request) {
 		slog.Info("Handling config request", "method", r.Method, "path", r.URL.Path)
 		ctx := context.Background()
 
-		cm, err := clientset.CoreV1().ConfigMaps(namespace).Get(ctx, "app-config", metav1.GetOptions{})
+		cm, err := clientset.CoreV1().ConfigMaps(namespace).Get(ctx, configmapName, metav1.GetOptions{})
 		if err != nil {
-			slog.Error("Failed to read ConfigMap", "namespace", namespace, "configmap", "app-config", "error", err)
+			slog.Error("Failed to read ConfigMap", "namespace", namespace, "configmap", configmapName, "error", err)
 			httpRequestsTotal.WithLabelValues("/config", "500").Inc()
 			http.Error(w, fmt.Sprintf("Failed to read ConfigMap: %v", err), http.StatusInternalServerError)
 			return
@@ -84,7 +90,7 @@ func main() {
 
 		configmapReadTotal.Inc()
 		httpRequestsTotal.WithLabelValues("/config", "200").Inc()
-		slog.Info("ConfigMap read successfully", "namespace", namespace, "configmap", "app-config", "keys", len(cm.Data))
+		slog.Info("ConfigMap read successfully", "namespace", namespace, "configmap", configmapName, "keys", len(cm.Data))
 
 		w.Header().Set("Content-Type", "application/json")
 		if err := json.NewEncoder(w).Encode(cm.Data); err != nil {

@@ -23,11 +23,18 @@ spec:
             - name: http
               containerPort: 8080
               protocol: TCP
-          envFrom:
-            - configMapRef:
-                name: {{ include "diiage-finals-app.fullname" . }}-backend-config
-          {{- if .Values.redis.enabled }}
           env:
+            - name: POD_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+            - name: APP_NAME
+              value: {{ .Values.backend.config.appName | quote }}
+            - name: LOG_LEVEL
+              value: {{ .Values.backend.config.logLevel | quote }}
+            - name: CONFIGMAP_NAME
+              value: {{ .Values.backend.config.configmapName | default "app-config" | quote }}
+            {{- if .Values.redis.enabled }}
             - name: REDIS_ADDRESS
               value: "{{ include "diiage-finals-app.fullname" . }}-redis:6379"
-          {{- end }}
+            {{- end }}

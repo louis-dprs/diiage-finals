@@ -4,3 +4,6 @@ dist/
 node_modules/
 .k8s-gen/
 
+# Helm deps
+**/Chart.lock
+**/chart/charts/
