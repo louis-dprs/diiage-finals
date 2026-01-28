@@ -1,0 +1,56 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: backend-app
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: 'https://github.com/louis-dprs/diiage-finals.git' # <--- TON FORK
+    targetRevision: HEAD
+    path: app/chart
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: default # ou un autre namespace dédié
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: traffic-gen
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: 'https://github.com/louis-dprs/diiage-finals.git'
+    targetRevision: HEAD
+    path: traffic-gen-app/chart
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: default
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: monitoring
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: 'https://github.com/louis-dprs/diiage-finals.git'
+    targetRevision: HEAD
+    path: monitoring/chart
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: default
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
