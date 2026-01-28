@@ -1,0 +1,16 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: backend-monitor
+  labels:
+    # Ce label est indispensable : il doit matcher ce que Prometheus cherche
+    release: monitoring
+spec:
+  selector:
+    matchLabels:
+      # Doit être IDENTIQUE aux labels de ton Service dans app/chart/templates/service.yaml
+      app.kubernetes.io/name: shop-backend
+  endpoints:
+  - port: http
+    path: /metrics
+    interval: 15s

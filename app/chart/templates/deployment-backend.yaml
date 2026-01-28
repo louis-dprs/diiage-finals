@@ -15,6 +15,7 @@ spec:
         app: {{ include "diiage-finals-app.name" . }}-backend
         {{- include "diiage-finals-app.labels" . | nindent 8 }}
     spec:
+      serviceAccountName: backend-sa
       containers:
         - name: backend
           image: "{{ .Values.image.backend.repository }}:{{ .Values.image.backend.tag }}"
