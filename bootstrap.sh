@@ -15,6 +15,8 @@ helm install argocd argo/argo-cd \
   --set configs.secret.argocdServerAdminPassword='$2a$10$6Mpy/pHxJjRuBQqNkEHeJelFb0ZDLmksr.klBkgbgctU3yXuPpBqK' \
   --set configs.secret.argocdServerAdminPasswordMtime="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
 
+helm install cert-manager   --namespace cert-manager --create-namespace   --wait   --repo https://charts.jetstack.io cert-manager   --set crds.enabled=true
 
-echo "ArgoCD installation completed."
+
+echo "ArgoCD + Certmanager installation completed."
 

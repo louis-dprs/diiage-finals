@@ -6,7 +6,7 @@ replicaCount:
 
 image:
   backend:
-    repository: ghcr.io/example/backend
+    repository: ghcr.io/lucchmielowski/diiage-finals/backend
     tag: "latest"
     pullPolicy: IfNotPresent
 

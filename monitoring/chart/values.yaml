@@ -30,8 +30,8 @@ opentelemetryCollector:
       cpu: 100m
       memory: 256Mi
   exporters:
-    tempoEndpoint: monitoring-stack-tempo.monitoring.svc.cluster.local:4317
-    prometheusEndpoint: http://monitoring-stack-prometheus-server.monitoring.svc.cluster.local:80/api/v1/write
+    tempoEndpoint: tempo.monitoring.svc.cluster.local:4317
+    prometheusEndpoint: http://prometheus-server.monitoring.svc.cluster.local:80/api/v1/write
 
 # Prometheus configuration
 prometheus:
@@ -78,7 +78,7 @@ prometheus:
       scrape_configs:
         - job_name: 'otel-collector'
           static_configs:
-            - targets: ['monitoring-collector-collector-monitoring.monitoring.svc.cluster.local:8888']
+            - targets: ['collector-monitoring.monitoring.svc.cluster.local:8888']
         
         - job_name: 'backend'
           kubernetes_sd_configs:
@@ -193,7 +193,7 @@ grafana:
         - name: Prometheus
           type: prometheus
           access: proxy
-          url: http://monitoring-stack-prometheus-server:80
+          url: http://prometheus-server:80
           isDefault: true
           editable: true
           jsonData:
@@ -202,7 +202,7 @@ grafana:
         - name: Tempo
           type: tempo
           access: proxy
-          url: http://monitoring-stack-tempo:3200
+          url: http://tempo:3200
           isDefault: false
           editable: true
           jsonData:
@@ -215,7 +215,7 @@ grafana:
         - name: Tempo (Search)
           type: tempo
           access: proxy
-          url: http://monitoring-stack-tempo:3200
+          url: http://tempo:3200
           isDefault: false
           editable: true
           jsonData:
