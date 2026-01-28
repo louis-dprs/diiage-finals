@@ -1,13 +1,12 @@
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  # On utilise un nom simple et fixe pour éviter les erreurs de templates
   name: backend-sa
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  name: backend-pod-reader
+  name: backend-role
 rules:
 - apiGroups: [""]
   resources: ["pods", "configmaps"]
@@ -16,12 +15,12 @@ rules:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
-  name: backend-pod-reader-binding
+  name: backend-binding
 subjects:
 - kind: ServiceAccount
   name: backend-sa
   namespace: default
 roleRef:
   kind: ClusterRole
-  name: backend-pod-reader
+  name: backend-role
   apiGroup: rbac.authorization.k8s.io

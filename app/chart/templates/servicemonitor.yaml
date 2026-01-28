@@ -3,16 +3,12 @@ kind: ServiceMonitor
 metadata:
   name: backend-monitor
   labels:
-    # Ce label est OBLIGATOIRE pour que ton Prometheus 
-    # (qui a le label instance=monitoring) accepte de lire ce moniteur.
-    release: monitoring 
+    release: monitoring
 spec:
   selector:
     matchLabels:
-      # On utilise les labels EXACTS que tu as vus dans ton "kubectl get svc"
       app.kubernetes.io/name: diiage-finals-app
       app.kubernetes.io/instance: backend-app
   endpoints:
-  - port: http
+  - port: http # Vérifie bien que ton service backend nomme son port "http"
     path: /metrics
-    interval: 15s
